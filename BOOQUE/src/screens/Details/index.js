@@ -1,5 +1,5 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Left from '../../assets/images/Left.png'
 import Favorite from '../../assets/images/Favorite.png'
 import Share from '../../assets/images/Share.png'
@@ -7,8 +7,20 @@ import { Background_Color, Button_Primary } from '../../assets/utils/colors'
 import { ms, scale } from 'react-native-size-matters'
 import cover from '../../assets/images/cover.jpg'
 import Title from '../Home/components/title'
+import { useDispatch, useSelector } from 'react-redux'
+import { getDetailBook } from '../Home/redux/action'
 
 export default function Detail() {
+    const dispatch = useDispatch();
+    const { detailBook } = useSelector(state => state.home);
+    useEffect(() => {
+        getDataBook()
+    }, [])
+
+    const getDataBook = () => {
+        // fetching data api
+        dispatch(getDetailBook());
+    };
     return (
         <View style={styles.background}>
             <ScrollView>
@@ -28,12 +40,12 @@ export default function Detail() {
                 <View style={styles.line} />
                 <View style={styles.heading}>
                     <View style={styles.imagesContainer}>
-                        <Image source={cover} style={styles.cover} />
+                        <Image source={{ uri: `${detailBook.cover_image}` }} style={styles.cover} />
                     </View>
                     <View style={styles.rightContent}>
                         <View>
                             <Text style={{ color: 'black', fontSize: ms(24), fontWeight: 'bold' }}>
-                                Buku Tulis
+                                {detailBook.title}
                             </Text>
                             <Text style={{ color: '#72808A', fontSize: ms(18), fontWeight: '400' }}>
                                 by Author
